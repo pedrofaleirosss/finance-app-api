@@ -22,9 +22,9 @@ export class CreateUserController {
         return badRequest({ message: 'Invalid e-mail format' });
       }
 
-      const passwordIsValid = params.password.length >= 6;
+      const passwordIsNotValid = params.password.length < 6;
 
-      if (!passwordIsValid) {
+      if (passwordIsNotValid) {
         return badRequest({
           message: 'Password must be at least 6 characters long',
         });
