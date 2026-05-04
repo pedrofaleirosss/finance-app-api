@@ -1,7 +1,12 @@
 import { CreateUserUseCase } from '../use-cases/create-user.js';
-import validator from 'validator';
-import { badRequest, created, serverError } from './helpers.js';
+import { badRequest, created, serverError } from './helpers/http.js';
 import { EmailAlreadyInUseError } from '../errors/user.js';
+import {
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+  invalidEmailResponse,
+  invalidPasswordResponse,
+} from './helpers/user.js';
 
 export class CreateUserController {
   async execute(httpRequest) {
@@ -16,18 +21,16 @@ export class CreateUserController {
         }
       }
 
-      const emailIsValid = validator.isEmail(params.email);
+      const emailIsValid = checkIfEmailIsValid(params.email);
 
       if (!emailIsValid) {
-        return badRequest({ message: 'Invalid e-mail format' });
+        return invalidEmailResponse();
       }
 
-      const passwordIsNotValid = params.password.length < 6;
+      const passwordIsValid = checkIfPasswordIsValid(params.password);
 
-      if (passwordIsNotValid) {
-        return badRequest({
-          message: 'Password must be at least 6 characters long',
-        });
+      if (!passwordIsValid) {
+        return invalidPasswordResponse();
       }
 
       const createUserUseCase = new CreateUserUseCase();

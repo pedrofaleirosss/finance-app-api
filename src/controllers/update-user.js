@@ -1,24 +1,31 @@
-import { badRequest, ok, serverError } from './helpers.js';
-import validator from 'validator';
+import { badRequest, ok, serverError } from './helpers/http.js';
 import { UpdateUserUseCase } from '../use-cases/update-user.js';
 import { EmailAlreadyInUseError } from '../errors/user.js';
+import {
+  checkIfEmailIsValid,
+  checkIfIdIsValid,
+  checkIfPasswordIsValid,
+  invalidEmailResponse,
+  invalidIdResponse,
+  invalidPasswordResponse,
+} from './helpers/user.js';
 
 export class UpdateUserController {
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId;
 
-      const isIdValid = validator.isUUID(userId);
+      const isIdValid = checkIfIdIsValid(userId);
 
       if (!isIdValid) {
-        return badRequest({ message: 'Invalid user ID format' });
+        return invalidIdResponse();
       }
 
-      const updateUserParams = httpRequest.body;
+      const params = httpRequest.body;
 
       const allowedFields = ['first_name', 'last_name', 'email', 'password'];
 
-      const someFieldIsNotAllowed = Object.keys(updateUserParams).some(
+      const someFieldIsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       );
 
@@ -27,37 +34,32 @@ export class UpdateUserController {
       }
 
       for (const field of allowedFields) {
-        if (updateUserParams[field].trim().length === 0) {
+        if (params[field].trim().length === 0) {
           return badRequest({
             message: `The field ${field} is blank. Please provide a value.`,
           });
         }
       }
 
-      if (updateUserParams.email) {
-        const emailIsValid = validator.isEmail(updateUserParams.email);
+      if (params.email) {
+        const emailIsValid = checkIfEmailIsValid(params.email);
 
         if (!emailIsValid) {
-          return badRequest({ message: 'Invalid e-mail format' });
+          return invalidEmailResponse();
         }
       }
 
-      if (updateUserParams.password) {
-        const passwordIsNotValid = updateUserParams.password.length < 6;
+      if (params.password) {
+        const passwordIsValid = checkIfPasswordIsValid(params.password);
 
-        if (passwordIsNotValid) {
-          return badRequest({
-            message: 'Password must be at least 6 characters long',
-          });
+        if (!passwordIsValid) {
+          return invalidPasswordResponse();
         }
       }
 
       const updateUserUseCase = new UpdateUserUseCase();
 
-      const updatedUser = await updateUserUseCase.execute(
-        userId,
-        updateUserParams,
-      );
+      const updatedUser = await updateUserUseCase.execute(userId, params);
 
       return ok(updatedUser);
     } catch (error) {
