@@ -1,4 +1,3 @@
-import { UpdateUserUseCase } from '../use-cases/index.js';
 import { EmailAlreadyInUseError } from '../errors/user.js';
 import {
   badRequest,
@@ -13,6 +12,10 @@ import {
 } from './helpers/index.js';
 
 export class UpdateUserController {
+  constructor(updateUserUseCase) {
+    this.updateUserUseCase = updateUserUseCase;
+  }
+
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId;
@@ -35,7 +38,7 @@ export class UpdateUserController {
         return badRequest({ message: 'Some provided field is not allowed.' });
       }
 
-      for (const field of allowedFields) {
+      for (const field of Object.keys(params)) {
         if (params[field].trim().length === 0) {
           return badRequest({
             message: `The field ${field} is blank. Please provide a value.`,
@@ -59,9 +62,7 @@ export class UpdateUserController {
         }
       }
 
-      const updateUserUseCase = new UpdateUserUseCase();
-
-      const updatedUser = await updateUserUseCase.execute(userId, params);
+      const updatedUser = await this.updateUserUseCase.execute(userId, params);
 
       return ok(updatedUser);
     } catch (error) {
