@@ -25,3 +25,9 @@ export const validateRequiredFields = (params, requiredFields) => {
 
   return { ok: true, missingField: null };
 };
+
+export const requiredFieldIsMissingResponse = (field) => {
+  return badRequest({
+    message: `The field ${field} is required.`,
+  });
+};
