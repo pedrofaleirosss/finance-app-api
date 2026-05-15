@@ -8,8 +8,10 @@ import {
   invalidTypeResponse,
   requiredFieldIsMissingResponse,
   serverError,
+  userNotFoundResponse,
   validateRequiredFields,
 } from '../helpers/index.js';
+import { UserNotFoundError } from '../../errors/user.js';
 
 export class CreateTransactionController {
   constructor(createTransactionUseCase) {
@@ -57,6 +59,11 @@ export class CreateTransactionController {
       return created(transaction);
     } catch (error) {
       console.error(error);
+
+      if (error instanceof UserNotFoundError) {
+        return userNotFoundResponse();
+      }
+
       return serverError();
     }
   }
