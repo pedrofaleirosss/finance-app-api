@@ -36,7 +36,7 @@ export class UpdateTransactionController {
       }
 
       for (const field of Object.keys(params)) {
-        if (params[field].trim().length === 0) {
+        if (params[field].toString().trim().length === 0) {
           return badRequest({
             message: `The field ${field} is blank. Please provide a value.`,
           });
