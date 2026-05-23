@@ -45,3 +45,13 @@ export const createUserSchema = z.object({
       message: 'Password must be at least 6 characters long.',
     }),
 });
+
+export const updateUserSchema = z
+  .strictObject(createUserSchema.shape, {
+    error: (issue) => {
+      if (issue.code === 'unrecognized_keys') {
+        return 'Some provided field is not allowed.';
+      }
+    },
+  })
+  .partial();
