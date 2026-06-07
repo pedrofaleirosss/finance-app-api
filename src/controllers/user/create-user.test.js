@@ -122,7 +122,7 @@ describe('Create User Controller', () => {
     expect(executeSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 
-  it('should return 500 if CreateUserUseCase throws an error', async () => {
+  it('should return 500 if CreateUserUseCase throws', async () => {
     const { sut, createUserUseCase } = makeSut();
     jest.spyOn(createUserUseCase, 'execute').mockImplementationOnce(() => {
       throw new Error('Test error');
