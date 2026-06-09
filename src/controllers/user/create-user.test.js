@@ -5,7 +5,7 @@ import { EmailAlreadyInUseError } from '../../errors/user.js';
 
 describe('Create User Controller', () => {
   class CreateUserUseCaseStub {
-    execute(user) {
+    async execute(user) {
       return user;
     }
   }

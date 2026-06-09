@@ -4,7 +4,7 @@ import { jest } from '@jest/globals';
 
 describe('Delete User Controller', () => {
   class DeleteUserUseCaseStub {
-    execute() {
+    async execute() {
       return {
         id: faker.string.uuid(),
         first_name: faker.person.firstName(),
