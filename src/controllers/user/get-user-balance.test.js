@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { GetUserBalanceController } from './get-user-balance.js';
+import { jest } from '@jest/globals';
 
 describe('Get User Balance Controller', () => {
   class GetUserBalanceUseCaseStub {
@@ -34,11 +35,22 @@ describe('Get User Balance Controller', () => {
     expect(result.statusCode).toBe(200);
   });
 
-  it('should return 400 when userId is invalid', async () => {
+  it('should return 400 if userId is invalid', async () => {
     const { sut } = makeSut();
 
     const result = await sut.execute({ params: { userId: 'invalid-uuid' } });
 
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 500 if GetUserBalanceUseCase throws', async () => {
+    const { sut, getUserBalanceUseCase } = makeSut();
+    jest
+      .spyOn(getUserBalanceUseCase, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    const result = await sut.execute(httpRequest);
+
+    expect(result.statusCode).toBe(500);
   });
 });
