@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { GetUserByIdController } from './get-user-by-id.js';
+import { jest } from '@jest/globals';
 
 describe('Get User By Id Controller', () => {
   class GetUserByIdUseCaseStub {
@@ -37,5 +38,16 @@ describe('Get User By Id Controller', () => {
     const result = await sut.execute({ params: { userId: 'invalid-uuid' } });
 
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 404 if user is not found', async () => {
+    const { sut, getUserByIdUseCase } = makeSut();
+    jest.spyOn(getUserByIdUseCase, 'execute').mockResolvedValueOnce(null);
+
+    const result = await sut.execute({
+      params: { userId: faker.string.uuid() },
+    });
+
+    expect(result.statusCode).toBe(404);
   });
 });
