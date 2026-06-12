@@ -46,6 +46,19 @@ describe('Create Transaction Controller', () => {
     expect(response.statusCode).toBe(201);
   });
 
+  it('should return 201 if transaction is created successfully (investment)', async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute({
+      body: {
+        ...baseHttpRequest.body,
+        type: 'INVESTMENT',
+      },
+    });
+
+    expect(response.statusCode).toBe(201);
+  });
+
   it('should return 400 when missing user_id', async () => {
     const { sut } = makeSut();
 
