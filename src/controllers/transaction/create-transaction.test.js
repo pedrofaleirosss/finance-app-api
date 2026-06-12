@@ -110,4 +110,17 @@ describe('Create Transaction Controller', () => {
 
     expect(response.statusCode).toBe(400);
   });
+
+  it('should return 400 when type is not EARNING, EXPENSE or INVESTMENT', async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute({
+      body: {
+        ...baseHttpRequest.body,
+        type: 'INVALID_TYPE',
+      },
+    });
+
+    expect(response.statusCode).toBe(400);
+  });
 });
