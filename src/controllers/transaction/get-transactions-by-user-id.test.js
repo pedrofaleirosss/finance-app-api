@@ -36,4 +36,14 @@ describe('Get Transactions By User Id Controller', () => {
 
     expect(response.statusCode).toBe(200);
   });
+
+  it('should return 400 when missing userId in query', async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute({
+      query: { userId: undefined },
+    });
+
+    expect(response.statusCode).toBe(400);
+  });
 });
