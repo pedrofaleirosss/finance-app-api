@@ -174,4 +174,13 @@ describe('Create Transaction Controller', () => {
 
     expect(response.statusCode).toBe(500);
   });
+
+  it('should call CreateTransactionUseCase with correct params', async () => {
+    const { sut, createTransactionUseCase } = makeSut();
+    const executeSpy = jest.spyOn(createTransactionUseCase, 'execute');
+
+    await sut.execute(baseHttpRequest);
+
+    expect(executeSpy).toHaveBeenCalledWith(baseHttpRequest.body);
+  });
 });
