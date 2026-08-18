@@ -19,6 +19,7 @@ describe('Get User By Id Use Case', () => {
 
   const makeSut = () => {
     const getUserByIdRepository = new GetUserByIdRepositoryStub();
+
     const sut = new GetUserByIdUseCase(getUserByIdRepository);
 
     return { sut, getUserByIdRepository };
