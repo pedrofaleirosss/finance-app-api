@@ -49,4 +49,15 @@ describe('Delete Transaction Use Case', () => {
 
     expect(deleteTransactionRepositorySpy).toHaveBeenCalledWith(id);
   });
+
+  it('should throw if DeleteTransactionRepository throws', async () => {
+    const { sut, deleteTransactionRepository } = makeSut();
+    jest
+      .spyOn(deleteTransactionRepository, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    const promise = sut.execute(faker.string.uuid());
+
+    await expect(promise).rejects.toThrow();
+  });
 });
