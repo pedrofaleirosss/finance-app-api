@@ -1,5 +1,6 @@
 import { DeleteTransactionUseCase } from './delete-transaction.js';
 import { faker } from '@faker-js/faker';
+import { jest } from '@jest/globals';
 
 describe('Delete Transaction Use Case', () => {
   const transaction = {
@@ -34,5 +35,18 @@ describe('Delete Transaction Use Case', () => {
     const result = await sut.execute(id);
 
     expect(result).toEqual({ ...transaction, id });
+  });
+
+  it('should call DeleteTransactionRepository with correct params', async () => {
+    const { sut, deleteTransactionRepository } = makeSut();
+    const deleteTransactionRepositorySpy = jest.spyOn(
+      deleteTransactionRepository,
+      'execute',
+    );
+    const id = faker.string.uuid();
+
+    await sut.execute(id);
+
+    expect(deleteTransactionRepositorySpy).toHaveBeenCalledWith(id);
   });
 });
