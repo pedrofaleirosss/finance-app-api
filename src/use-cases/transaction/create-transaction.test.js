@@ -1,24 +1,12 @@
 import { CreateTransactionUseCase } from './create-transaction.js';
-import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
 import { UserNotFoundError } from '../../errors/user.js';
+import { transaction, user } from '../../tests';
 
 describe('Create Transaction Use Case', () => {
   const createTransactionParams = {
-    user_id: faker.string.uuid(),
-    name: faker.commerce.productName(),
-    date: faker.date.anytime().toISOString(),
-    type: 'EXPENSE',
-    amount: Number(faker.finance.amount()),
-  };
-
-  const user = {
-    first_name: faker.name.firstName(),
-    last_name: faker.name.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({
-      length: 6,
-    }),
+    ...transaction,
+    id: undefined,
   };
 
   class CreateTransactionRepositoryStub {
@@ -28,8 +16,8 @@ describe('Create Transaction Use Case', () => {
   }
 
   class GetUserByIdRepositoryStub {
-    async execute(userId) {
-      return { ...user, id: userId };
+    async execute() {
+      return user;
     }
   }
 
