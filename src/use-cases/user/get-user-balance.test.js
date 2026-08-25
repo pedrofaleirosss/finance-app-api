@@ -2,15 +2,9 @@ import { GetUserBalanceUseCase } from './get-user-balance.js';
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
 import { UserNotFoundError } from '../../errors/user.js';
+import { userBalance, user } from '../../tests';
 
 describe('Get User Balance Use Case', () => {
-  const userBalance = {
-    earnings: faker.finance.amount(),
-    expenses: faker.finance.amount(),
-    investments: faker.finance.amount(),
-    balance: faker.finance.amount(),
-  };
-
   class GetUserBalanceRepositoryStub {
     async execute() {
       return userBalance;
@@ -19,13 +13,7 @@ describe('Get User Balance Use Case', () => {
 
   class GetUserByIdRepositoryStub {
     async execute() {
-      return {
-        id: faker.string.uuid(),
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password({ length: 6 }),
-      };
+      return user;
     }
   }
 
