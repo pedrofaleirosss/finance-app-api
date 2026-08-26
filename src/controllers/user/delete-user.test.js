@@ -1,17 +1,12 @@
 import { DeleteUserController } from './delete-user.js';
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
+import { user } from '../../tests';
 
 describe('Delete User Controller', () => {
   class DeleteUserUseCaseStub {
     async execute() {
-      return {
-        id: faker.string.uuid(),
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password({ length: 6 }),
-      };
+      return user;
     }
   }
 

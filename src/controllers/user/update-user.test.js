@@ -2,10 +2,11 @@ import { faker } from '@faker-js/faker';
 import { UpdateUserController } from './update-user.js';
 import { jest } from '@jest/globals';
 import { EmailAlreadyInUseError } from '../../errors/user.js';
+import { user } from '../../tests';
 
 describe('Update User Controller', () => {
   class UpdateUserUseCaseStub {
-    async execute(user) {
+    async execute() {
       return user;
     }
   }
