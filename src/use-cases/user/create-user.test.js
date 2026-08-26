@@ -16,7 +16,7 @@ describe('Create User Use Case', () => {
   }
 
   class CreateUserRepositoryStub {
-    async execute(user) {
+    async execute() {
       return user;
     }
   }
