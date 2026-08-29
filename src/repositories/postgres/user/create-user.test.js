@@ -3,7 +3,7 @@ import { user } from '../../../tests/index.js';
 import { prisma } from '../../../../prisma/prisma.js';
 import { jest } from '@jest/globals';
 
-describe('Create User Repository', () => {
+describe('Postgres Create User Repository', () => {
   it('should create a user on db successfully', async () => {
     const sut = new PostgresCreateUserRepository();
 
