@@ -1,3 +1,4 @@
+import { TransactionType } from '@prisma/client';
 import { prisma } from '../../../../prisma/prisma.js';
 import { user as fakeUser } from '../../../tests/index.js';
 import { PostgresGetUserBalanceRepository } from './get-user-balance.js';
@@ -75,7 +76,7 @@ describe('Postgres Get User Balance Repository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: 'EARNING',
+        type: TransactionType.EARNING,
       },
       _sum: {
         amount: true,
@@ -84,7 +85,7 @@ describe('Postgres Get User Balance Repository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: 'EXPENSE',
+        type: TransactionType.EXPENSE,
       },
       _sum: {
         amount: true,
@@ -93,7 +94,7 @@ describe('Postgres Get User Balance Repository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: 'INVESTMENT',
+        type: TransactionType.INVESTMENT,
       },
       _sum: {
         amount: true,
