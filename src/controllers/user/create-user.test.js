@@ -142,4 +142,56 @@ describe('Create User Controller', () => {
 
     expect(result.statusCode).toBe(400);
   });
+
+  it('should return 400 if first_name is not a string', async () => {
+    const { sut } = makeSut();
+
+    const result = await sut.execute({
+      body: {
+        ...httpRequest.body,
+        first_name: 123,
+      },
+    });
+
+    expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 400 if last_name is not a string', async () => {
+    const { sut } = makeSut();
+
+    const result = await sut.execute({
+      body: {
+        ...httpRequest.body,
+        last_name: 123,
+      },
+    });
+
+    expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 400 if email is not a string', async () => {
+    const { sut } = makeSut();
+
+    const result = await sut.execute({
+      body: {
+        ...httpRequest.body,
+        email: 123,
+      },
+    });
+
+    expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 400 if password is not a string', async () => {
+    const { sut } = makeSut();
+
+    const result = await sut.execute({
+      body: {
+        ...httpRequest.body,
+        password: 123,
+      },
+    });
+
+    expect(result.statusCode).toBe(400);
+  });
 });
