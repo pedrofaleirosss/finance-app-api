@@ -162,6 +162,19 @@ describe('Create Transaction Controller', () => {
     expect(response.statusCode).toBe(400);
   });
 
+  it('should return 400 if name is not a string', async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute({
+      body: {
+        ...baseHttpRequest.body,
+        name: 123,
+      },
+    });
+
+    expect(response.statusCode).toBe(400);
+  });
+
   it('should return 500 if CreateTransactionUseCase throws', async () => {
     const { sut, createTransactionUseCase } = makeSut();
     jest
