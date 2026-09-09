@@ -4,10 +4,7 @@ import validator from 'validator';
 export const createTransactionSchema = z.object({
   user_id: z
     .string({
-      error: (issue) =>
-        issue.input === undefined
-          ? 'User ID is required.'
-          : 'User ID must be a string.',
+      error: (issue) => issue.input === undefined && 'User ID is required.',
     })
     .uuid({
       message: 'User ID must be a valid UUID.',
@@ -23,10 +20,7 @@ export const createTransactionSchema = z.object({
     .min(1, { message: 'Name is required.' }),
   date: z
     .string({
-      error: (issue) =>
-        issue.input === undefined
-          ? 'Date is required.'
-          : 'Date must be a string.',
+      error: (issue) => issue.input === undefined && 'Date is required.',
     })
     .datetime('Date must be a valid ISO datetime.')
     .pipe(z.coerce.date()),
