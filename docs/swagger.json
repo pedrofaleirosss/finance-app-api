@@ -192,30 +192,51 @@
           }
         }
       }
+    },
+    "/api/transactions": {
+      "post": {
+        "tags": ["Transaction"],
+        "summary": "Create a new transaction",
+        "parameters": [
+          {
+            "name": "body",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateTransactionParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transaction created successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "schema": {
+              "$ref": "#/definitions/InvalidParamsResponse"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
-    "CreateUserParams": {
-      "type": "object",
-      "properties": {
-        "first_name": {
-          "type": "string",
-          "example": "John"
-        },
-        "last_name": {
-          "type": "string",
-          "example": "Doe"
-        },
-        "email": {
-          "type": "string",
-          "example": "john@doe.com"
-        },
-        "password": {
-          "type": "string",
-          "example": "password123"
-        }
-      }
-    },
     "User": {
       "type": "object",
       "properties": {
@@ -262,12 +283,24 @@
         }
       }
     },
-    "InvalidParamsResponse": {
+    "CreateUserParams": {
       "type": "object",
       "properties": {
-        "message": {
+        "first_name": {
           "type": "string",
-          "example": "Invalid param (this message depends on the param that is invalid)"
+          "example": "John"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john@doe.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password123"
         }
       }
     },
@@ -277,6 +310,71 @@
         "message": {
           "type": "string",
           "example": "User not found"
+        }
+      }
+    },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "f04f4944-25db-4bdd-986a-b48f86cb1370"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "a5235da6-c391-490b-8ff3-8c5f430beed1"
+        },
+        "name": {
+          "type": "string",
+          "example": "Salary"
+        },
+        "date": {
+          "type": "string",
+          "example": "2026-01-01T00:00:00.000Z"
+        },
+        "amount": {
+          "type": "string",
+          "example": "1000"
+        },
+        "type": {
+          "type": "string",
+          "example": "EARNING",
+          "description": "Type of transaction (EARNING, EXPENSE, INVESTMENT)"
+        }
+      }
+    },
+    "CreateTransactionParams": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "example": "a5235da6-c391-490b-8ff3-8c5f430beed1"
+        },
+        "name": {
+          "type": "string",
+          "example": "Salary"
+        },
+        "date": {
+          "type": "string",
+          "example": "2026-01-01T00:00:00.000Z"
+        },
+        "type": {
+          "type": "string",
+          "example": "EARNING",
+          "description": "Type of transaction (EARNING, EXPENSE, INVESTMENT)"
+        },
+        "amount": {
+          "type": "number",
+          "example": 1000
+        }
+      }
+    },
+    "InvalidParamsResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Invalid param (this message depends on the param that is invalid)"
         }
       }
     },
