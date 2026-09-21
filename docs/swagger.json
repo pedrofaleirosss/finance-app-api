@@ -76,39 +76,6 @@
           }
         }
       },
-      "delete": {
-        "tags": ["User"],
-        "summary": "Delete user by ID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "type": "string",
-            "description": "ID of the user to delete"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User deleted successfully",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "$ref": "#/definitions/UserNotFoundResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerErrorResponse"
-            }
-          }
-        }
-      },
       "patch": {
         "tags": ["User"],
         "summary": "Update user by ID",
@@ -149,6 +116,39 @@
             }
           },
 
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -406,19 +406,23 @@
       "properties": {
         "first_name": {
           "type": "string",
-          "example": "John"
+          "example": "John",
+          "required": true
         },
         "last_name": {
           "type": "string",
-          "example": "Doe"
+          "example": "Doe",
+          "required": true
         },
         "email": {
           "type": "string",
-          "example": "john@doe.com"
+          "example": "john@doe.com",
+          "required": true
         },
         "password": {
           "type": "string",
-          "example": "password123"
+          "example": "password123",
+          "required": true
         }
       }
     },
@@ -466,24 +470,29 @@
       "properties": {
         "user_id": {
           "type": "string",
-          "example": "a5235da6-c391-490b-8ff3-8c5f430beed1"
+          "example": "a5235da6-c391-490b-8ff3-8c5f430beed1",
+          "required": true
         },
         "name": {
           "type": "string",
-          "example": "Salary"
+          "example": "Salary",
+          "required": true
         },
         "date": {
           "type": "string",
-          "example": "2026-01-01T00:00:00.000Z"
+          "example": "2026-01-01T00:00:00.000Z",
+          "required": true
         },
         "type": {
           "type": "string",
           "example": "EARNING",
-          "description": "Type of transaction (EARNING, EXPENSE, INVESTMENT)"
+          "description": "Type of transaction (EARNING, EXPENSE, INVESTMENT)",
+          "required": true
         },
         "amount": {
           "type": "number",
-          "example": 1000
+          "example": 1000,
+          "required": true
         }
       }
     },
