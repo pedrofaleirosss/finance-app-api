@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { prisma } from '../../../../prisma/prisma.js';
 import { transaction, user } from '../../../tests/index.js';
 import { PostgresGetTransactionsByUserIdRepository } from './get-transactions-by-user-id.js';
@@ -19,11 +18,9 @@ describe('Postgres Get Transactions By User Id Repository', () => {
     expect(result[0].type).toBe(transaction.type);
     expect(result[0].user_id).toBe(user.id);
     expect(result[0].amount.toString()).toBe(transaction.amount.toString());
-    expect(dayjs(result[0].date).daysInMonth()).toBe(
-      dayjs(transaction.date).daysInMonth(),
+    expect(result[0].date.toISOString().slice(0, 10)).toBe(
+      new Date(transaction.date).toISOString().slice(0, 10),
     );
-    expect(dayjs(result[0].date).month()).toBe(dayjs(transaction.date).month());
-    expect(dayjs(result[0].date).year()).toBe(dayjs(transaction.date).year());
   });
 
   it('should call Prisma with correct params', async () => {

@@ -1,7 +1,6 @@
 import { PostgresCreateTransactionRepository } from './create-transaction.js';
 import { transaction, user } from '../../../tests/index.js';
 import { prisma } from '../../../../prisma/prisma.js';
-import dayjs from 'dayjs';
 import { jest } from '@jest/globals';
 
 describe('Postgres Create Transaction Repository', () => {
@@ -15,11 +14,9 @@ describe('Postgres Create Transaction Repository', () => {
     expect(result.type).toBe(transaction.type);
     expect(result.user_id).toBe(user.id);
     expect(result.amount.toString()).toBe(transaction.amount.toString());
-    expect(dayjs(result.date).daysInMonth()).toBe(
-      dayjs(transaction.date).daysInMonth(),
+    expect(result.date.toISOString().slice(0, 10)).toBe(
+      new Date(transaction.date).toISOString().slice(0, 10),
     );
-    expect(dayjs(result.date).month()).toBe(dayjs(transaction.date).month());
-    expect(dayjs(result.date).year()).toBe(dayjs(transaction.date).year());
   });
 
   it('should call Prisma with correct params', async () => {

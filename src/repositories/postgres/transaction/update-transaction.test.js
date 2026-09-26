@@ -3,7 +3,6 @@ import { prisma } from '../../../../prisma/prisma.js';
 import { transaction, user } from '../../../tests/index.js';
 import { PostgresUpdateTransactionRepository } from './update-transaction.js';
 import { TransactionType } from '@prisma/client';
-import dayjs from 'dayjs';
 import { jest } from '@jest/globals';
 import { TransactionNotFoundError } from '../../../errors/transaction.js';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -31,11 +30,9 @@ describe('Postgres Update Transaction Repository', () => {
     expect(result.type).toBe(params.type);
     expect(result.user_id).toBe(params.user_id);
     expect(result.amount.toString()).toBe(params.amount.toString());
-    expect(dayjs(result.date).daysInMonth()).toBe(
-      dayjs(params.date).daysInMonth(),
+    expect(result.date.toISOString().slice(0, 10)).toBe(
+      new Date(params.date).toISOString().slice(0, 10),
     );
-    expect(dayjs(result.date).month()).toBe(dayjs(params.date).month());
-    expect(dayjs(result.date).year()).toBe(dayjs(params.date).year());
   });
 
   it('should call Prisma with correct params', async () => {

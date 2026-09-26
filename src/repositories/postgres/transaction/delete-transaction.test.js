@@ -1,7 +1,6 @@
 import { prisma } from '../../../../prisma/prisma.js';
 import { PostgresDeleteTransactionRepository } from './delete-transaction.js';
 import { transaction, user } from '../../../tests/index.js';
-import dayjs from 'dayjs';
 import { jest } from '@jest/globals';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TransactionNotFoundError } from '../../../errors/index.js';
@@ -20,11 +19,9 @@ describe('Postgres Delete Transaction Repository', () => {
     expect(result.type).toBe(transaction.type);
     expect(result.user_id).toBe(user.id);
     expect(result.amount.toString()).toBe(transaction.amount.toString());
-    expect(dayjs(result.date).daysInMonth()).toBe(
-      dayjs(transaction.date).daysInMonth(),
+    expect(result.date.toISOString().slice(0, 10)).toBe(
+      new Date(transaction.date).toISOString().slice(0, 10),
     );
-    expect(dayjs(result.date).month()).toBe(dayjs(transaction.date).month());
-    expect(dayjs(result.date).year()).toBe(dayjs(transaction.date).year());
   });
 
   it('should call Prisma with correct params', async () => {
