@@ -177,4 +177,20 @@ describe('User Routes E2E Tests', () => {
     expect(response.body.tokens.accessToken).toBeDefined();
     expect(response.body.tokens.refreshToken).toBeDefined();
   });
+
+  it('POST /api/users/login should return 401 when user password is invalid', async () => {
+    const { body: createdUser } = await request(app)
+      .post('/api/users')
+      .send({
+        ...user,
+        id: undefined,
+      });
+
+    const response = await request(app).post('/api/users/login').send({
+      email: createdUser.email,
+      password: faker.internet.password(),
+    });
+
+    expect(response.status).toBe(401);
+  });
 });
