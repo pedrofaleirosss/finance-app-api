@@ -63,4 +63,30 @@ describe('Login User Controller', () => {
 
     expect(response.statusCode).toBe(401);
   });
+
+  it('should return 400 if email is invalid', async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute({
+      body: {
+        ...httpRequest.body,
+        email: 'invalid-email',
+      },
+    });
+
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should return 400 if password is less than 6 characters', async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute({
+      body: {
+        ...httpRequest.body,
+        password: '12345',
+      },
+    });
+
+    expect(response.statusCode).toBe(400);
+  });
 });
