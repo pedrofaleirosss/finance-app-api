@@ -89,4 +89,13 @@ describe('Login User Controller', () => {
 
     expect(response.statusCode).toBe(400);
   });
+
+  it('should return 500 if an unexpected error occurs', async () => {
+    const { sut, loginUserUseCase } = makeSut();
+    jest.spyOn(loginUserUseCase, 'execute').mockRejectedValueOnce(new Error());
+
+    const response = await sut.execute(httpRequest);
+
+    expect(response.statusCode).toBe(500);
+  });
 });
