@@ -1,6 +1,7 @@
 import {
   badRequest,
   checkIfIdIsValid,
+  forbidden,
   invalidIdResponse,
   ok,
   serverError,
@@ -9,6 +10,7 @@ import {
 import { updateTransactionSchema } from '../../schemas/index.js';
 import { ZodError } from 'zod';
 import { TransactionNotFoundError } from '../../errors/transaction.js';
+import { ForbiddenError } from '../../errors/user.js';
 
 export class UpdateTransactionController {
   constructor(updateTransactionUseCase) {
@@ -42,6 +44,10 @@ export class UpdateTransactionController {
 
       if (error instanceof TransactionNotFoundError) {
         return transactionNotFoundResponse();
+      }
+
+      if (error instanceof ForbiddenError) {
+        return forbidden();
       }
 
       console.log(error);

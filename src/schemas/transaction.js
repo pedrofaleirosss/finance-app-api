@@ -47,13 +47,6 @@ export const createTransactionSchema = z.object({
     ),
 });
 
-export const updateTransactionSchema = z
-  .strictObject(createTransactionSchema.shape, {
-    error: (issue) => {
-      if (issue.code === 'unrecognized_keys') {
-        return 'Some provided field is not allowed.';
-      }
-    },
-  })
+export const updateTransactionSchema = createTransactionSchema
   .omit({ user_id: true })
   .partial();
